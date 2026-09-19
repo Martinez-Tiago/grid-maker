@@ -207,3 +207,7 @@ btnShare.addEventListener('click', async () => {
 });
 
 updateUI();
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch((err) => console.warn('SW no registrado', err));
+}
