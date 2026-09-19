@@ -30,12 +30,18 @@
       <div class="row">
         <label>Columnas
           <select id="cols">
-            <option>1</option><option>2</option><option selected>3</option><option>4</option>
+            <option>1</option>
+            <option>2</option>
+            <option selected>3</option>
+            <option>4</option>
           </select>
         </label>
         <label>Filas
           <select id="rows">
-            <option>1</option><option selected>2</option><option>3</option><option>4</option>
+            <option>1</option>
+            <option selected>2</option>
+            <option>3</option>
+            <option>4</option>
           </select>
         </label>
       </div>
@@ -70,6 +76,11 @@
     <section id="preview" class="card">
       <h2>3. Vista previa</h2>
       <canvas id="canvas" width="400" height="400"></canvas>
+      <div id="pager" class="pager" hidden>
+        <button id="prev" class="btn" aria-label="Grilla anterior">‹</button>
+        <span id="page-label">Grilla 1 de 1</span>
+        <button id="next" class="btn" aria-label="Grilla siguiente">›</button>
+      </div>
     </section>
 
     <!-- 4. Exportar -->
@@ -78,8 +89,8 @@
       <div class="row">
         <label>Formato
           <select id="format">
-            <option value="image/jpeg" selected>JPG</option>
-            <option value="image/png">PNG</option>
+            <option value="image/jpeg" selected>JPG (liviano)</option>
+            <option value="image/png">PNG (pesado)</option>
             <option value="image/webp">WebP</option>
           </select>
         </label>
@@ -88,6 +99,7 @@
         <button id="btn-download" class="btn btn-primary" disabled>Descargar</button>
         <button id="btn-share" class="btn" disabled>Compartir</button>
       </div>
+      <p id="status" class="hint" role="status"></p>
     </section>
   </main>
 

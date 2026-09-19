@@ -79,3 +79,8 @@ input[type="range"] { width: 100%; min-height: 44px; }
 .thumbs canvas { width: 100%; aspect-ratio: 3 / 4; border-radius: 6px; background: var(--bg); }
 
 #canvas { width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--border); }
+
+.pager { display: flex; align-items: center; justify-content: space-between; gap: .75rem; margin-top: .75rem; }
+.pager[hidden] { display: none; }
+.pager .btn { flex: 0 0 56px; padding: 0; font-size: 1.4rem; }
+.pager span { font-weight: 600; }
