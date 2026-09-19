@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <title>Grid Maker</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="app-header">
+    <h1>Grid Maker</h1>
+    <p>Armá grillas de fotos para tus publicaciones</p>
+  </header>
+
+  <main>
+    <!-- 1. Fotos -->
+    <section id="photos" class="card">
+      <h2>1. Fotos</h2>
+      <label class="btn btn-primary" for="file-input">Elegir fotos</label>
+      <input id="file-input" type="file" accept="image/*" multiple hidden>
+      <p id="photo-count" class="hint">Todavía no elegiste fotos</p>
+      <div id="thumbs" class="thumbs"></div>
+    </section>
+
+    <!-- 2. Configuración -->
+    <section id="config" class="card">
+      <h2>2. Grilla</h2>
+
+      <div class="row">
+        <label>Columnas
+          <select id="cols">
+            <option>1</option><option>2</option><option selected>3</option><option>4</option>
+          </select>
+        </label>
+        <label>Filas
+          <select id="rows">
+            <option>1</option><option selected>2</option><option>3</option><option>4</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="row">
+        <label>Proporción de celda
+          <select id="ratio">
+            <option value="3/4" selected>3:4 (vertical)</option>
+            <option value="4/5">4:5</option>
+            <option value="1/1">1:1 (cuadrada)</option>
+          </select>
+        </label>
+        <label>Ajuste
+          <select id="fit">
+            <option value="cover" selected>Recortar (llenar)</option>
+            <option value="contain">Foto completa</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="row">
+        <label>Separación
+          <input id="gap" type="range" min="0" max="40" value="10">
+        </label>
+        <label>Color de fondo
+          <input id="bg" type="color" value="#ffffff">
+        </label>
+      </div>
+    </section>
+
+    <!-- 3. Vista previa -->
+    <section id="preview" class="card">
+      <h2>3. Vista previa</h2>
+      <canvas id="canvas" width="400" height="400"></canvas>
+    </section>
+
+    <!-- 4. Exportar -->
+    <section id="actions" class="card">
+      <h2>4. Guardar</h2>
+      <div class="row">
+        <label>Formato
+          <select id="format">
+            <option value="image/jpeg" selected>JPG</option>
+            <option value="image/png">PNG</option>
+            <option value="image/webp">WebP</option>
+          </select>
+        </label>
+      </div>
+      <div class="row">
+        <button id="btn-download" class="btn btn-primary" disabled>Descargar</button>
+        <button id="btn-share" class="btn" disabled>Compartir</button>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
