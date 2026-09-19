@@ -17,14 +17,22 @@
   </header>
 
   <main>
-    <!-- 1. Fotos -->
-    <section id="photos" class="card">
-      <h2>1. Fotos</h2>
-      <label class="btn btn-primary" for="file-input">Elegir fotos</label>
-      <input id="file-input" type="file" accept="image/*" multiple hidden>
-      <p id="photo-count" class="hint">Todavía no elegiste fotos</p>
-      <div id="thumbs" class="thumbs"></div>
-    </section>
+  <!-- 1. Fotos -->
+  <section id="photos" class="card">
+    <h2>1. Fotos</h2>
+    <label class="btn btn-primary" for="file-input">Elegir fotos</label>
+    <input id="file-input" type="file" accept="image/*" multiple hidden>
+    <p id="photo-count" class="hint">Todavía no elegiste fotos</p>
+    <div id="thumbs" class="thumbs"></div>
+
+    <p id="tools-hint" class="hint" hidden>Tocá una miniatura para moverla o quitarla</p>
+    <div id="photo-tools" class="row tools" hidden>
+      <button id="move-left" class="btn" aria-label="Mover a la izquierda">←</button>
+      <button id="move-right" class="btn" aria-label="Mover a la derecha">→</button>
+      <button id="remove" class="btn btn-danger">Quitar</button>
+    </div>
+    <button id="clear-all" class="link-btn" hidden>Quitar todas las fotos</button>
+  </section>
 
     <!-- 2. Configuración -->
     <section id="config" class="card">

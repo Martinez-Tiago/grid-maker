@@ -18,6 +18,8 @@ const controls = ['cols', 'rows', 'ratio', 'fit', 'gap', 'bg', 'format'].map($);
 
 /** @type {ImageBitmap[]} */
 const photos = [];
+const thumbOf = new WeakMap(); // bitmap -> canvas de su miniatura
+let selected = -1; // índice de la foto seleccionada
 let currentPage = 0;
 let busy = false;
 let pendingShare = null; // archivos ya generados, a la espera de un nuevo toque
@@ -32,8 +34,9 @@ fileInput.addEventListener('change', async (e) => {
         resizeHeight: WORK_HEIGHT,
         resizeQuality: 'medium',
       });
-      photos.push(bitmap);
       addThumb(bitmap);
+      photos.push(bitmap);
+      syncThumbs();
       onChange();
     } catch (err) {
       console.warn('No se pudo leer', file.name, err);
@@ -51,7 +54,7 @@ function addThumb(bitmap) {
   const w = bitmap.width * scale;
   const h = bitmap.height * scale;
   ctx.drawImage(bitmap, (c.width - w) / 2, (c.height - h) / 2, w, h);
-  thumbs.appendChild(c);
+  thumbOf.set(bitmap, c);
 }
 
 /* ---------- Configuración y páginas ---------- */
@@ -117,6 +120,22 @@ function updateUI() {
   btnShare.title = shareSupported() ? '' : 'Este navegador no permite compartir archivos (necesita HTTPS)';
 
   renderPreview(s);
+
+  // Miniaturas: resaltar las de la grilla actual y la seleccionada
+  const perPage = slots(s);
+  [...thumbs.children].forEach((el, i) => {
+    el.classList.toggle('out-page', Math.floor(i / perPage) !== currentPage);
+    el.classList.toggle('selected', i === selected);
+  });
+
+  // Herramientas de edición
+  const hasSel = selected >= 0 && !busy;
+  $('photo-tools').hidden = !hasSel;
+  $('tools-hint').hidden = !n || selected >= 0;
+  $('clear-all').hidden = !n;
+  $('clear-all').disabled = busy;
+  $('move-left').disabled = selected <= 0;
+  $('move-right').disabled = selected >= n - 1;
 }
 
 function renderPreview(s) {
@@ -137,6 +156,58 @@ function renderPreview(s) {
 controls.forEach((el) => el.addEventListener('input', onChange));
 $('prev').addEventListener('click', () => { currentPage--; updateUI(); });
 $('next').addEventListener('click', () => { currentPage++; updateUI(); });
+
+/* ---------- Editar fotos ---------- */
+
+function syncThumbs() {
+  thumbs.replaceChildren(...photos.map((p) => thumbOf.get(p)));
+}
+
+function goToSelectedPage() {
+  if (selected >= 0) currentPage = Math.floor(selected / slots(readSettings()));
+}
+
+thumbs.addEventListener('click', (e) => {
+  if (busy) return;
+  const i = [...thumbs.children].indexOf(e.target.closest('canvas'));
+  if (i < 0) return;
+  selected = selected === i ? -1 : i;
+  goToSelectedPage();
+  onChange();
+});
+
+function move(dir) {
+  const j = selected + dir;
+  if (selected < 0 || j < 0 || j >= photos.length) return;
+  [photos[selected], photos[j]] = [photos[j], photos[selected]];
+  selected = j;
+  goToSelectedPage();
+  syncThumbs();
+  onChange();
+}
+
+$('move-left').addEventListener('click', () => move(-1));
+$('move-right').addEventListener('click', () => move(1));
+
+$('remove').addEventListener('click', () => {
+  if (selected < 0) return;
+  const [bitmap] = photos.splice(selected, 1);
+  bitmap.close(); // libera la memoria de la foto
+  selected = Math.min(selected, photos.length - 1); // queda seleccionada la siguiente
+  goToSelectedPage();
+  syncThumbs();
+  onChange();
+});
+
+$('clear-all').addEventListener('click', () => {
+  if (!confirm('¿Quitar todas las fotos?')) return;
+  photos.forEach((b) => b.close());
+  photos.length = 0;
+  selected = -1;
+  currentPage = 0;
+  syncThumbs();
+  onChange();
+});
 
 /* ---------- Exportar ---------- */
 

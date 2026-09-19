@@ -84,3 +84,23 @@ input[type="range"] { width: 100%; min-height: 44px; }
 .pager[hidden] { display: none; }
 .pager .btn { flex: 0 0 56px; padding: 0; font-size: 1.4rem; }
 .pager span { font-weight: 600; }
+
+.thumbs canvas { cursor: pointer; transition: opacity .15s; }
+.thumbs canvas.out-page { opacity: .4; }
+.thumbs canvas.selected { outline: 3px solid var(--accent); outline-offset: 1px; opacity: 1; }
+
+.tools { margin: .75rem 0 0; }
+.tools .btn { flex: 1; }
+.btn-danger { color: #d93025; border-color: #d93025; }
+
+.link-btn {
+  margin-top: .75rem;
+  padding: .5rem 0;
+  background: none;
+  border: 0;
+  color: var(--muted);
+  font-size: .9rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+[hidden] { display: none !important; }
